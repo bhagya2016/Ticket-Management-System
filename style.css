@@ -1,0 +1,54 @@
+body {
+    background: #f4f7fb;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #111827, #2563eb);
+    color: white;
+    padding: 80px 0;
+}
+
+.hero-card {
+    background: rgba(255,255,255,0.14);
+    padding: 40px;
+    border-radius: 18px;
+    backdrop-filter: blur(8px);
+}
+
+.card {
+    border-radius: 14px;
+}
+
+.stat-card {
+    color: white;
+    padding: 22px;
+    border-radius: 14px;
+    text-align: center;
+    min-height: 125px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.stat-card h3 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.stat-card p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.ticket-info {
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.table small {
+    color: #6b7280;
+}
+
+.navbar-brand {
+    letter-spacing: 0.5px;
+}

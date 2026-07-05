@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-4">
+    <h2>Analytics</h2>
+
+    <div class="row g-4 mt-2">
+        <div class="col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header fw-bold">Status Analytics</div>
+                <div class="card-body">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header fw-bold">Priority Analytics</div>
+                <div class="card-body">
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card shadow border-0">
+                <div class="card-header fw-bold">Daily Ticket Trend</div>
+                <div class="card-body">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+new Chart(document.getElementById("statusChart"), {
+    type: "pie",
+    data: {
+        labels: {{ status_rows | map(attribute="status") | list | tojson }},
+        datasets: [{ data: {{ status_rows | map(attribute="count") | list | tojson }} }]
+    }
+});
+
+new Chart(document.getElementById("priorityChart"), {
+    type: "bar",
+    data: {
+        labels: {{ priority_rows | map(attribute="priority") | list | tojson }},
+        datasets: [{ label: "Tickets", data: {{ priority_rows | map(attribute="count") | list | tojson }} }]
+    }
+});
+
+new Chart(document.getElementById("dailyChart"), {
+    type: "line",
+    data: {
+        labels: {{ daily_rows | map(attribute="day") | list | tojson }},
+        datasets: [{ label: "Tickets Created", data: {{ daily_rows | map(attribute="count") | list | tojson }}, tension: 0.3 }]
+    }
+});
+</script>
+{% endblock %}

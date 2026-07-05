@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-4">
+    <h2>Ticket Management</h2>
+
+    <div class="card shadow border-0 my-3">
+        <div class="card-body">
+            <form method="GET" class="row g-2">
+                <div class="col-md-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search ticket/customer/email" value="{{ search }}">
+                </div>
+
+                <div class="col-md-2">
+                    <select name="status" class="form-select">
+                        <option value="">All Status</option>
+                        {% for s in ["Open", "In Progress", "Resolved", "Closed"] %}
+                        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <select name="priority" class="form-select">
+                        <option value="">All Priority</option>
+                        {% for p in ["Low", "Medium", "High", "Critical"] %}
+                        <option value="{{ p }}" {% if priority == p %}selected{% endif %}>{{ p }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+                </div>
+
+                <div class="col-md-2">
+                    <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+                </div>
+
+                <div class="col-md-1">
+                    <button class="btn btn-primary w-100">Go</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <tr class="table-dark">
+                    <th>Ticket ID</th>
+                    <th>Customer</th>
+                    <th>Issue</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Engineer</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for ticket in tickets %}
+                <tr>
+                    <td><b>{{ ticket.ticket_code }}</b></td>
+                    <td>{{ ticket.customer_name }}<br><small>{{ ticket.customer_email }}</small></td>
+                    <td>{{ ticket.title }}<br><small>{{ ticket.category }}</small></td>
+                    <td><span class="badge bg-info text-dark">{{ ticket.status }}</span></td>
+                    <td><span class="badge bg-warning text-dark">{{ ticket.priority }}</span></td>
+                    <td>{{ ticket.assigned_engineer }}</td>
+                    <td>{{ ticket.created_at }}</td>
+                    <td>
+                        <a href="/ticket/{{ ticket.id }}" class="btn btn-sm btn-outline-primary">Update</a>
+
+                        {% if session.get("role") == "admin" %}
+                        <a href="/delete-ticket/{{ ticket.id }}" onclick="return confirm('Delete this ticket?')" class="btn btn-sm btn-outline-danger">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted p-4">No tickets found.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

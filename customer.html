@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-5 fw-bold">Customer Support Portal</h1>
+                <p class="lead">Raise your issue and track it with a professional helpdesk workflow.</p>
+                <a href="#ticketForm" class="btn btn-info btn-lg text-white">Raise Ticket</a>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-card">
+                    <h3>24/7 Support</h3>
+                    <p>Fast ticket creation, priority assignment, and engineer tracking.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5" id="ticketForm">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Raise New Ticket</h4>
+        </div>
+
+        <div class="card-body">
+            <form action="/create-ticket" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Customer Name</label>
+                        <input type="text" name="customer_name" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Customer Email</label>
+                        <input type="email" name="customer_email" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Issue Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Example: Unable to login" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select">
+                        <option>Technical</option>
+                        <option>Billing</option>
+                        <option>Account</option>
+                        <option>Network</option>
+                        <option>General</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Issue Description</label>
+                    <textarea name="description" class="form-control" rows="5" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Attachment</label>
+                    <input type="file" name="attachment" class="form-control">
+                    <small class="text-muted">Allowed: png, jpg, jpeg, pdf, txt, docx</small>
+                </div>
+
+                <button class="btn btn-primary">Submit Ticket</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

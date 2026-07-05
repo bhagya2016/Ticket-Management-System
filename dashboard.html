@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Engineer Dashboard</h2>
+        <span class="badge bg-info text-dark">Logged in as {{ session.get("role") }}</span>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-2 col-6"><div class="stat-card bg-primary"><h3>{{ stats.total }}</h3><p>Total</p></div></div>
+        <div class="col-md-2 col-6"><div class="stat-card bg-warning"><h3>{{ stats.open }}</h3><p>Open</p></div></div>
+        <div class="col-md-2 col-6"><div class="stat-card bg-info"><h3>{{ stats.progress }}</h3><p>Progress</p></div></div>
+        <div class="col-md-2 col-6"><div class="stat-card bg-success"><h3>{{ stats.resolved }}</h3><p>Resolved</p></div></div>
+        <div class="col-md-2 col-6"><div class="stat-card bg-secondary"><h3>{{ stats.closed }}</h3><p>Closed</p></div></div>
+        <div class="col-md-2 col-6"><div class="stat-card bg-danger"><h3>{{ stats.critical }}</h3><p>Critical</p></div></div>
+    </div>
+
+    <div class="row mt-4 g-4">
+        <div class="col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header fw-bold">Tickets by Status</div>
+                <div class="card-body">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header fw-bold">Tickets by Priority</div>
+                <div class="card-body">
+                    <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header fw-bold">Recent Tickets</div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Customer</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for ticket in recent_tickets %}
+                <tr>
+                    <td>{{ ticket.ticket_code }}</td>
+                    <td>{{ ticket.customer_name }}</td>
+                    <td>{{ ticket.title }}</td>
+                    <td><span class="badge bg-status">{{ ticket.status }}</span></td>
+                    <td><span class="badge bg-priority">{{ ticket.priority }}</span></td>
+                    <td><a href="/ticket/{{ ticket.id }}" class="btn btn-sm btn-outline-primary">View</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const statusLabels = {{ status_rows | map(attribute="status") | list | tojson }};
+const statusCounts = {{ status_rows | map(attribute="count") | list | tojson }};
+
+new Chart(document.getElementById("statusChart"), {
+    type: "doughnut",
+    data: {
+        labels: statusLabels,
+        datasets: [{ data: statusCounts }]
+    }
+});
+
+const priorityLabels = {{ priority_rows | map(attribute="priority") | list | tojson }};
+const priorityCounts = {{ priority_rows | map(attribute="count") | list | tojson }};
+
+new Chart(document.getElementById("priorityChart"), {
+    type: "bar",
+    data: {
+        labels: priorityLabels,
+        datasets: [{ label: "Tickets", data: priorityCounts }]
+    }
+});
+</script>
+{% endblock %}

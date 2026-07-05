@@ -215,12 +215,6 @@ The analytics page includes:
 
 ---
 
-## 👩‍💻 Developed By
-
-**Bhagya Sree**  
-Aspiring Data Analyst / Python Developer
-
----
 
 ## ⭐ Project Summary
 
